@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<VTKFile type="Collection" version="0.1" byte_order="LittleEndian" compressor="vtkZLibDataCompressor">
+<Collection>
+    <DataSet part="0" file="RRAM_set_segment_0_TE_0.72549776_1.46599167_0.vtu" name="Segment_0"/>
+    <DataSet part="1" file="RRAM_set_segment_0_TE_0.72549776_1.46599167_1.vtu" name="Segment_1"/>
+    <DataSet part="2" file="RRAM_set_segment_0_TE_0.72549776_1.46599167_2.vtu" name="Segment_2"/>
+  </Collection>
+</VTKFile>
