@@ -168,104 +168,8 @@ def Bern_dx(x):
         B_dx[idx_large] = 0.0
 
         return B_dx
-def Bern_qft(x,y):
-    B=np.exp(-x)*Bern(y-x)
-    dB_dx = np.exp(-y)*Bern_dx(x-y)
-    dB_dy = np.exp(-x)*Bern_dx(y-x)
-    return B, dB_dx, dB_dy
 
-def Bern_qft_sg2(x):
-    B=np.exp(x)*Bern(2*x)
-    dB_dx = np.exp(x)*Bern(2*x)+ np.exp(x)*2*Bern_dx(2*x)
-    return B, dB_dx
-
-## 202508 qft coupling item
-def dn_dEfn(n_i_node, Ut):
-    return -1 * n_i_node/Ut
-def dp_dEfp(p_i_node, Ut):
-    return p_i_node/Ut
-
-## 202508 trap and interface trap
-def trap_occupancy_acceptor(vn,cse,vp,csh,nt0,pt0,n_i_node,p_i_node):
-    return  (vn*cse*n_i_node+vp*csh*pt0) / (vn*cse*(n_i_node+nt0) + vp*csh*(p_i_node+pt0))     
-
-def trap_occupancy_donor(vn,cse,vp,csh,nt0,pt0,n_i_node,p_i_node):
-    return  (vn*cse*nt0+vp*csh*p_i_node) / (vn*cse*(n_i_node+nt0) + vp*csh*(p_i_node+pt0))
-
-def trap_df_dn(vn,cse,vp,csh,nt0,pt0,n_i_node,p_i_node):
-    return  (vn*cse*nt0+vp*csh*p_i_node) / ((vn*cse*(n_i_node+nt0) + vp*csh*(p_i_node+pt0))**2) *vn*cse
-
-def trap_df_dp(vn,cse,vp,csh,nt0,pt0,n_i_node,p_i_node):
-    return  (vn*cse*nt0+vp*csh*p_i_node) / ((vn*cse*(n_i_node+nt0) + vp*csh*(p_i_node+pt0))**2) *vp*csh
-
-def heiman_occupancy_acceptor(vn, sign, vp, sigp, nt0, pt0, n_i_node, p_i_node, occupancy_last, lambda1, lambda2, dt):
-    return  ( vn*sign*n_i_node + vp*sigp*pt0 - occupancy_last *( vn*sign*n_i_node*lambda1 + vn*sign*nt0*lambda1 \
-            + vp*sigp*p_i_node*lambda1 + vp*sigp*pt0*lambda1 - 1/dt ) ) \
-            /( 1/dt + vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2+vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2 )
-
-def heiman_occupancy_donor(vn, sign, vp, sigp, nt0, pt0, n_i_node, p_i_node, occupancy_last, lambda1, lambda2, dt):
-    return  ( vp*sigp*p_i_node + vn*sign*nt0 - occupancy_last *(vp*sigp*p_i_node*lambda1 + vp*sigp*pt0*lambda1 \
-            + vn*sign*n_i_node*lambda1 + vn*sign*nt0*lambda1 - 1/dt ) ) \
-            /( 1/dt + vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2+vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2 )
-
-def heiman_df_dn(vn, sign, vp, sigp, nt0, pt0, n_i_node, p_i_node, occupancy_last, lambda1, lambda2, dt):
-    return  ( (vn*sign-occupancy_last*vn*sign*lambda1)*(1/dt + vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2  \
-            +vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2) - vn*sign*lambda2*(vn*sign*n_i_node + vp*sigp*pt0 - occupancy_last  \
-            *( vn*sign*n_i_node*lambda1 + vn*sign*nt0*lambda1 + vp*sigp*p_i_node*lambda1 + vp*sigp*pt0*lambda1 - 1/dt)) ) \
-            /np.power( (1/dt + vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2+vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2),2 )
-
-def heiman_df_dp(vn, sign, vp, sigp, nt0, pt0, n_i_node, p_i_node, occupancy_last, lambda1, lambda2, dt):
-    return  ( -1*occupancy_last*vp*sigp*lambda1*(1/dt + vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2 \
-            + vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2) - vp*sigp*lambda2*( vn*sign*n_i_node + vp*sigp*pt0 - occupancy_last  \
-            *( vn*sign*n_i_node*lambda1 + vn*sign*nt0*lambda1 + vp*sigp*p_i_node*lambda1 + vp*sigp*pt0*lambda1 - 1/dt ) ) )  \
-            /np.power( (1/dt + vn*sign*n_i_node*lambda2 + vn*sign*nt0*lambda2+vp*sigp*p_i_node*lambda2 + vp*sigp*pt0*lambda2),2 )
-
-# 202508 initial guess for QFT
-def cal_fermi_e_with_n(n,phi,ni):
-    return phi - thermal_potential(constant['T0'])*np.log(n/ni)
-
-def cal_fermi_h_with_p(p,phi,ni):
-    return phi + thermal_potential(constant['T0'])*np.log(p/ni)
-
-class Mobility:
-    def const(self,para,type='electron'):
-        # constant mobility model
-        if type=='electron':
-            return para['mu0_e']
-        elif type=='hole':
-            return para['mu0_h']
-
-    def latice(self,para,temperature=300,type='electron'):  
-        # latice temperature dependent (latice scattering) mobility model
-        # mu=mu0*(T/300)^(-alpha)
-        if type=='electron':
-            mu_L=para['mu0_e']*(temperature/300)**(-para['alpha_e'])
-        elif type=='hole':
-            mu_L=para['mu0_h']*(temperature/300)**(-para['alpha_h'])
-        return mu_L
-
-    def latice_impurity(self,para,temperature=300,dopping=1e20,type='electron'): 
-        # Caughey and Thomas impurity model considering the scattering by latice and ionized impurity
-
-        mu_L=self.latice(para,temperature=temperature,type=type)
-        if type=='electron':
-            mu_LI=para['mu_min_e']+(mu_L-para['mu_min_e'])/(1.0+(dopping/para['C_ref_e'])**(para['alpha2_e']))
-        elif type=='hole':
-            mu_LI=para['mu_min_h']+(mu_L-para['mu_min_h'])/(1.0+(dopping/para['C_ref_h'])**(para['alpha2_h']))
-        return mu_LI
-
-    def latice_impurity_carrier(self,para,temperature=300,dopping=1e20,n=1e20,p=1e20,type='electron'): 
-        # Caughey and Thomas impurity model considering the scattering by latice, ionized impurity and carrier-carrier
-        
-        mu_L=self.latice(para,temperature=temperature,type=type)
-        if type=='electron':
-            mu_LIC=para['mu_min_e']+(mu_L-para['mu_min_e'])      \
-                    /(1.0+(dopping/para['C_ref_e'])**(para['alpha2_e'])+(np.sqrt(n*p)/(14.0*para['C_ref_e']))**(para['alpha2_e']))
-        elif type=='hole':
-            mu_LIC=para['mu_min_h']+(mu_L-para['mu_min_h'])      \
-                    /(1.0+(dopping/para['C_ref_h'])**(para['alpha2_h'])+(np.sqrt(n*p)/(14.0*para['C_ref_h']))**(para['alpha2_h']))
-        return mu_LIC
-    
+class Mobility:   
     ##20251201
     def rram_carrier_1(self,para,ion_density=2e25,type='electron'):
         if type=='electron':
@@ -299,51 +203,7 @@ class Mobility:
         return mu_L 
 
         
-class Recombination():
-    def srh(self,para,n_i,n,p):
-        R=(n*p-n_i**2)/(para['tau_p']*(n+n_i)+para['tau_n']*(p+n_i))
-        return R
-    ## 202508 - SRH coupling item
-    def srh_dR_dn(self,para,n_i,n,p):
-        D = (para['tau_p']*(n+n_i)+para['tau_n']*(p+n_i))
-        N = (n*p-n_i**2)
-        return (p * D - N * para['tau_p']) / (D * D)
-    def srh_dR_dp(self,para,n_i,n,p):
-        D = (para['tau_p']*(n+n_i)+para['tau_n']*(p+n_i))
-        N = (n*p-n_i**2)
-        return (n * D - N * para['tau_n']) / (D * D)
-    
-    def optical(self,para,n_i,n,p):
-        R=para['Copt']*(n*p-n_i**2)
-        return R
-    ## 202508 - optical coupling item    
-    def optical_dR_dn(self,para,n_i,n,p):
-        return para['Copt'] * p
-    def optical_dR_dp(self,para,n_i,n,p):
-        return para['Copt'] * n
-
-    def auger(self,para,n_i,n,p):
-        R=(para['augn']*n+para['augp']*p)*(n*p-n_i**2)
-        return R
-    ## 202508 - auger coupling item   
-    def auger_dR_dn(self,para,n_i,n,p):
-        return para['augn']*(n*p-n_i**2) + (para['augn']*n+para['augp']*p)*p
-    def auger_dR_dp(self,para,n_i,n,p):
-        return para['augp']*(n*p-n_i**2) + (para['augn']*n+para['augp']*p)*n
-
-    def impact_ionization(self,para,E,Jn,Jp):
-        valid_idx=np.abs(E)>para['E_crit_n']/10
-        R=np.zeros_like(E)
-        alpha_n=para['alpha_inf_n']*np.exp(-(para['E_crit_n']/np.abs(E[valid_idx]))**para['beta_n'])
-        alpha_p=para['alpha_inf_p']*np.exp(-(para['E_crit_p']/np.abs(E[valid_idx]))**para['beta_p'])
-        R[valid_idx]=-alpha_n*np.abs(Jn[valid_idx])/constant['q']-alpha_p*np.abs(Jp[valid_idx])/constant['q']
-        return R
-    def band_to_band(self,para,E):
-        valid_idx=np.abs(E)>para['Bbbt']/10
-        R=np.zeros_like(E)
-        R[valid_idx]=-para['D']*para['Abbt']*(np.abs(E[valid_idx])**para['gamma'])*np.exp(-para['Bbbt']/np.abs(E[valid_idx]))
-        return R
-    
+class Recombination():  
     ## 202509 ion recombination
     def ion_recombination(self,para,E,T,Ea_gen):
         R=np.zeros_like(E)

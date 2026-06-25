@@ -149,10 +149,6 @@ class Device:
         self.ion_density_residual = self.ion_density * self.residual_ion_percentage # set the residual ion density to be 10% of the initial ion density, which is used to simulate the forming effect in RRAM device, where the ion density after reset is usually much lower than the initial ion density before forming, but it is not zero.
 
     def set_gaussian_ion_strip(self, reg_name, conc, type, char, x_peak=0):
-        """
-        在 x = x_peak 处产生最大浓度，
-        x 方向随距离 x_peak 的增加呈高斯分布。
-        """
         reg_num = self.find_region_number(reg_name)
         
         if self.mesh.regions[reg_num].type != "semiconductor":
@@ -175,10 +171,6 @@ class Device:
         self.ion_density_residual = self.ion_density * self.residual_ion_percentage # set the residual ion density to be 10% of the initial ion density, which is used to simulate the forming effect in RRAM device, where the ion density after reset is usually much lower than the initial ion density before forming, but it is not zero.
 
     def set_gaussian_ion_area_strip(self, reg_name, conc, type, char, x_peak_min=0, x_peak_max=0):
-        """
-        在 x = x_peak 处产生最大浓度，
-        x 方向随距离 x_peak 的增加呈高斯分布。
-        """
         reg_num = self.find_region_number(reg_name)
         
         if self.mesh.regions[reg_num].type != "semiconductor":
