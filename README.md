@@ -693,7 +693,7 @@ In particular, the present implementation does not imply that the subsequent ion
 If you use this code or the associated models in academic research, please cite the corresponding publication:
 
 ```text
-[The final publication citation will be updated later.]
+[DOI: 10.1109/TED.2026.3737722]
 ```
 
 ---
