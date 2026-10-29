@@ -1,0 +1,2 @@
+pulse,read_voltage_V,read_TE_voltage_V,read_current_A,read_electron_current_A,read_hole_current_A,conductance_S,read_time_s,read_ion_relative_l2,read_residual_ion_relative_l2,programming_fingerprint_before,read_attempts,read_failed_attempts,read_iterations_total,read_min_time_step_s
+0,0.1,0.1,2.142919797720036e-06,2.142919797720036e-06,-2.995094465315007e-98,2.142919797720036e-05,1e-10,5.990910476125402e-10,3.2051415767712266e-10,094fc7a722dc418fa199018a53e8dd3a2e5c21c7544a791a64ced163856c4126,1,0,13,1e-10

@@ -1,0 +1,110 @@
+{
+  "LTP": {
+    "source": "states/RRAM_set_4LTP_0.83/from083_20261013_005953_814012/simulator_set.pkl",
+    "original_sha256": "ea63a1a2e1c1cf7d8495262042432cfc95e7ffc99d3c4e0d43432bfd9225523e",
+    "packaged_sha256": "708201aab193c89cca3c0b001727b9b43ad35a30a67392ef322c799161a8d9f9",
+    "size_bytes": 4577929,
+    "module": "experiments.ltp_ltd.core.Simulator_parallel",
+    "state_arrays_roundtrip_exact": true,
+    "program_conf": {
+      "with_temperature": true,
+      "with_conductor_temperature": true,
+      "with_soret": true,
+      "heat_transient": true,
+      "heat_robin_boundary": true,
+      "heat_robin_T_ambient": 300,
+      "heat_robin_L_ext": 1e-06,
+      "method": "newton",
+      "max_iter": 40,
+      "damping": 0.8,
+      "l2_resolution": 1e-06,
+      "with_electrode_voltage": true,
+      "with_electron": true,
+      "with_hole": false,
+      "with_ion": true,
+      "show_details": true,
+      "compliance_electrode_near": null,
+      "uniform_band": true,
+      "compliance": true,
+      "forming_complete": false,
+      "solver_num_threads": 2,
+      "compliance_voltage_neg": false,
+      "compliance_electrode": "TE",
+      "damping_electrode_voltage": 0.8,
+      "compliance_method": "iv_func",
+      "assemble_num_threads": 1
+    },
+    "regions": [
+      [
+        "BE",
+        10
+      ],
+      [
+        "hfox",
+        0.4
+      ],
+      [
+        "TE",
+        10
+      ],
+      [
+        "sio2",
+        1.3
+      ]
+    ]
+  },
+  "LTD": {
+    "source": "states_1/ltd_oldRESET_snapshot_TE50_20261018_164225_selection/simulator_LTD_initial.pkl",
+    "original_sha256": "8dccfc5f1a47042079210d9dfa1b706f17baec6ce7b879ec4c6129f204223fa2",
+    "packaged_sha256": "9d1092749e921e1609fcfeaf4be87b58c48e1e46c1ad49d3b219149e808f3af8",
+    "size_bytes": 2520654,
+    "module": "experiments.ltp_ltd.core.Simulator_parallel",
+    "state_arrays_roundtrip_exact": true,
+    "program_conf": {
+      "method": "newton",
+      "max_iter": 30,
+      "damping": 0.8,
+      "l2_resolution": 1e-06,
+      "with_electrode_voltage": true,
+      "with_electron": true,
+      "with_hole": false,
+      "with_temperature": true,
+      "with_ion": true,
+      "show_details": true,
+      "with_conductor_temperature": true,
+      "compliance_electrode_near": null,
+      "uniform_band": true,
+      "compliance": true,
+      "with_soret": true,
+      "forming_complete": false,
+      "heat_transient": true,
+      "solver_num_threads": 2,
+      "heat_robin_boundary": true,
+      "heat_robin_T_ambient": 300,
+      "heat_robin_L_ext": 1e-06,
+      "compliance_voltage_neg": true,
+      "compliance_electrode": "TE",
+      "damping_electrode_voltage": 0.8,
+      "compliance_method": "iv_func",
+      "assemble_num_threads": 1
+    },
+    "regions": [
+      [
+        "BE",
+        50
+      ],
+      [
+        "hfox",
+        0.4
+      ],
+      [
+        "TE",
+        50
+      ],
+      [
+        "sio2",
+        1.3
+      ]
+    ]
+  }
+}

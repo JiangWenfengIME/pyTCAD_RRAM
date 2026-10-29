@@ -1,0 +1,28 @@
+{
+  "direction": "LTP",
+  "voltages_V": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0,
+    1.2
+  ],
+  "pulses": 500,
+  "hold_time_s": 1e-06,
+  "read_time_s": 1e-10,
+  "read_voltage_V": 0.1,
+  "checkpoint_interval": 50,
+  "colors": {
+    "0.5": "#8AB6D3",
+    "0.6": "#75A7C9",
+    "0.7": "#6098BF",
+    "0.8": "#4B87B3",
+    "0.9": "#3076A7",
+    "1.0": "#24618E",
+    "1.2": "#174B74",
+    "1.5": "#0C3556"
+  },
+  "excluded_voltage_V": 1.5
+}
